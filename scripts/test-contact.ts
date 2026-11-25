@@ -1,0 +1,32 @@
+// Run: npx tsx scripts/test-contact.ts   (no real email is sent; see notes in docs/EMAIL-SETUP.md)
+import { POST } from "../app/api/contact/route";
+import { buildEmail, validateContact } from "../lib/contact";
+const good = { name: "Test User", email: "test.user@example.com", phone: "+91 91508 35164", subject: "Course question", message: "Hello, I would like to know more about the programme." };
+let n = 0, fail = 0; const ok = (name: string, c: boolean, extra = "") => { n++; if (!c) fail++; console.log(c ? "PASS" : "FAIL", name, extra); };
+let ipN = 0; const call = (body: unknown, o: { ip?: string; origin?: string; raw?: string } = {}) => POST(new Request("http://localhost:3000/api/contact", { method: "POST", headers: { "content-type": "application/json", host: "localhost:3000", "x-forwarded-for": o.ip ?? `10.0.0.${++ipN}`, ...(o.origin ? { origin: o.origin } : {}) }, body: o.raw ?? JSON.stringify(body) }));
+const clearEnv = () => { for (const k of ["RESEND_API_KEY", "CONTACT_TO_EMAIL", "CONTACT_FROM_EMAIL", "UPSTASH_REDIS_REST_URL", "UPSTASH_REDIS_REST_TOKEN", "KV_REST_API_URL", "VERCEL_ENV"]) delete process.env[k]; };
+(async () => {
+  clearEnv(); ok("missing env -> 503 (no secrets leaked)", (await call(good)).status === 503);
+  Object.assign(process.env, { RESEND_API_KEY: "re_dummy_test_key", CONTACT_TO_EMAIL: "vdn23022003@gmail.com", CONTACT_FROM_EMAIL: "contact@example.test" });
+  let r = await call({}); const e = (await r.json()).errors ?? {};
+  ok("empty submission -> 422 with all required fields", r.status === 422 && ["name", "email", "subject", "message"].every(k => e[k]), Object.keys(e).join(","));
+  r = await call({ ...good, email: "not-an-email" }); ok("invalid email -> 422", r.status === 422 && !!(await r.json()).errors.email);
+  r = await call({ ...good, email: "a@b.com\r\nBcc: attacker@evil.com" }); ok("header injection in email -> rejected", r.status === 422);
+  const inj = validateContact({ ...good, name: "Eve\r\nBcc: x@y.com", subject: "Hi\r\nBcc: x@y.com" }); const mail = inj.ok ? buildEmail(inj.data) : null;
+  ok("CR/LF stripped from name and subject", inj.ok && !/[\r\n]/.test(inj.data.name + inj.data.subject) && mail!.subject === "New Contact Enquiry – KAIZO LABS");
+  r = await call({ ...good, message: "x".repeat(3001) }); ok("over-length message -> 422", r.status === 422);
+  r = await call({ ...good, message: "http://a.com http://b.com http://c.com http://d.com spam spam" }); ok("link-stuffed spam -> 422", r.status === 422);
+  r = await call({ ...good, website: "http://bot.example" }); ok("honeypot filled -> silent 200, nothing sent", r.status === 200 && (await r.json()).ok === true);
+  ok("malformed JSON -> 400", (await call(null, { raw: "{bad" })).status === 400);
+  ok("cross-origin -> 403", (await call(good, { origin: "https://evil.example" })).status === 403);
+  const t0 = Date.now(); r = await call(good); const b = await r.json();
+  ok("valid input but Resend unreachable here -> 502, no fake success", r.status === 502 && !b.ok, `(${Date.now() - t0} ms)`);
+  const ip = "203.0.113.9"; const codes: number[] = []; for (let i = 0; i < 5; i++) codes.push((await call(good, { ip })).status);
+  ok("rate limit (dev memory fallback): 4th request within a minute -> 429", codes.slice(0, 3).every(c => c === 502) && codes[3] === 429 && codes[4] === 429, codes.join(","));
+  const rl = await call(good, { ip }); ok("429 carries Retry-After", rl.headers.get("retry-after") !== null, `(${rl.headers.get("retry-after")}s)`);
+  process.env.VERCEL_ENV = "production"; r = await call(good); ok("production without Upstash -> 503 (in-memory limiter refused)", r.status === 503);
+  delete process.env.VERCEL_ENV;
+  const m = buildEmail({ ...good, phone: "", programme: "", status: "", message: "<script>alert(1)</script>\nline 2" });
+  ok("email: title, subject, reply text and HTML-escaping", m.html.includes("KAIZO LABS – NEW WEBSITE ENQUIRY") && !m.html.includes("<script>") && m.html.includes("&lt;script&gt;") && m.text.includes("Phone: Not provided") && m.html.includes("#D4AF37"));
+  console.log(`\n${n - fail}/${n} passed`); process.exit(fail ? 1 : 0);
+})();
