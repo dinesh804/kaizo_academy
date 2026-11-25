@@ -20,3 +20,28 @@ export function validateContact(raw: Record<string, unknown>): { ok: true; data:
   if (d.status.length > 200) errors.status = "Please shorten this field.";
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, data: d };
 }
+
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (char) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+})[char]!);
+
+export function buildEmail(data: ContactData) {
+  const subject = "New Contact Enquiry – KAIZO LABS";
+  const fields = [
+    ["Name", data.name],
+    ["Email", data.email],
+    ["Phone", data.phone || "Not provided"],
+    ["Programme", data.programme || "Not specified"],
+    ["Subject", data.subject],
+    ["Status", data.status || "Not provided"],
+    ["Message", data.message],
+  ] as const;
+  const text = ["KAIZO LABS – NEW WEBSITE ENQUIRY", ...fields.map(([label, value]) => `${label}: ${value}`)].join("\n\n");
+  const rows = fields.map(([label, value]) => `<tr><th align="left" style="padding:8px 12px;color:#D4AF37">${escapeHtml(label)}</th><td style="padding:8px 12px">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`).join("");
+  const html = `<div style="font-family:Arial,sans-serif;color:#222"><h1 style="font-size:20px;color:#D4AF37">KAIZO LABS – NEW WEBSITE ENQUIRY</h1><table style="border-collapse:collapse">${rows}</table></div>`;
+  return { subject, text, html };
+}
