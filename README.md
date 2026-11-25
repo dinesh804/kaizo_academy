@@ -29,4 +29,4 @@ Each enquiry becomes a row in the "Enquiries" sheet and is emailed to you. Optio
 
 
 ## Contact form email
-The contact form posts to FormSubmit (no API key) and emails vdn23022003@gmail.com. Activation and testing steps: `docs/FORMSUBMIT-SETUP.md`. Run the logic tests with `npx tsx scripts/test-formsubmit.ts`.
+The contact form posts to Formspree. Create a form in the Formspree dashboard, then add its form ID as `NEXT_PUBLIC_FORMSPREE_ID` in Vercel's Production environment and redeploy. Setup notes: `docs/FORMSPREE-SETUP.md`.

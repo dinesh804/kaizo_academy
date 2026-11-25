@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { PHONE_DISPLAY, programmes } from "@/lib/content";
-import { mailtoFallback, sendEnquiry } from "@/lib/formsubmit";
+import { mailtoFallback, sendEnquiry } from "@/lib/formspree";
 const GFORM = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL || "https://forms.gle/FDBdNuYpocwoQJsD9"; // course enrolment: separate workflow
 const EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "vdn23022003@gmail.com";
 const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919150835164";
@@ -36,7 +36,7 @@ export default function Contact({ programme }: { programme?: string }) {
           <div role="status"><h3 className="font-display text-xl font-semibold">Thank you! Your message has been sent.</h3><p className="mt-2 text-muted">We will reply to the email address you provided.</p>
             <button type="button" className="btn btn-s mt-5" onClick={() => setSt("idle")}>Send another message</button></div>
         ) : (<div className="grid gap-4 sm:grid-cols-2">
-          <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}><label>Website<input name="_honey" tabIndex={-1} autoComplete="off" /></label></div>
+          <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}><label>Website<input name="_gotcha" tabIndex={-1} autoComplete="off" /></label></div>
           <label>Full name<input name="name" required maxLength={100} className={f} autoComplete="name" /><Err k="name" /></label>
           <label>Email address<input name="email" type="email" required maxLength={254} className={f} autoComplete="email" /><Err k="email" /></label>
           <label>Phone number<input name="phone" type="tel" maxLength={20} className={f} autoComplete="tel" /><Err k="phone" /></label>
