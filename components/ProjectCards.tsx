@@ -2,9 +2,10 @@ import ProjectArt from "./ProjectArt";
 import { projects, type Project } from "@/lib/projects";
 export function Cover({ p }: { p: Project }) {
   const shot = p.screenshots[0];
+  const image = shot ?? p.coverImage;
   return (<div className="relative aspect-video overflow-hidden rounded-xl border border-neon/30 bg-bg">
-    {shot ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={shot} alt={`${p.title} screenshot`} loading="lazy" className="h-full w-full object-cover" /> : <ProjectArt kind={p.art} />}
-    <span className="absolute bottom-2 left-2 rounded bg-bg/85 px-2 py-0.5 text-[10px] tracking-wider text-muted">{shot ? "SCREENSHOT" : "ILLUSTRATIVE CONCEPT VISUAL"}</span></div>);
+    {image ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={image} alt={`${p.title} ${shot ? "screenshot" : "AI-generated concept visual"}`} loading="lazy" className="h-full w-full object-cover" /> : <ProjectArt kind={p.art} />}
+    <span className="absolute bottom-2 left-2 rounded bg-bg/85 px-2 py-0.5 text-[10px] tracking-wider text-muted">{shot ? "SCREENSHOT" : p.coverImage ? "AI-GENERATED CONCEPT VISUAL" : "ILLUSTRATIVE CONCEPT VISUAL"}</span></div>);
 }
 export const Tech = ({ items }: { items: string[] }) => <ul className="flex flex-wrap gap-2 text-xs text-muted">{items.map(t => <li key={t} className="rounded-full border border-white/10 px-3 py-1">{t}</li>)}</ul>;
 export default function ProjectCards() {
