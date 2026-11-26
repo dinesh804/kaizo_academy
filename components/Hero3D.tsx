@@ -97,11 +97,11 @@ export default function Hero3D({ onReady }: { onReady?: () => void }) {
   const toggle = () => { const p = !api.current.paused; api.current.paused = p; setPaused(p); if (ctrl.current) ctrl.current.autoRotate = !p && !calm; };
   return (
     <div className="absolute inset-0">
-      <div className="absolute inset-0" style={{ pointerEvents: touch ? "auto" : "none" }} role="img" aria-label="Interactive 3D golden neural core. Drag to rotate, scroll or pinch to zoom, click the core to send a pulse.">
+      <div className="absolute inset-0" style={{ pointerEvents: touch ? "auto" : "none" }} role="img" aria-label="Interactive 3D golden neural core. Drag to rotate, pinch to zoom on touch devices, and click the core to send a pulse.">
         <Canvas onPointerMissed={() => api.current.clear?.()} onCreated={() => onReady?.()} dpr={hi ? [1, 2] : [1, 1.5]} camera={{ position: [0, .9, wide ? { knot: 6.2, brain: 5.4, sphere: 7 }[HERO_SHAPE] : { knot: 9.5, brain: 8, sphere: 10 }[HERO_SHAPE]], fov: 42 }} frameloop={calm ? "demand" : "always"} gl={{ antialias: true, powerPreference: "high-performance" }}>
           <Scene api={api} calm={calm} hi={hi} pulseRef={pulse} />
           {hi && !calm && <EffectComposer multisampling={0}><Bloom mipmapBlur luminanceThreshold={.55} intensity={.8} /></EffectComposer>}
-          <OrbitControls ref={ctrl} enableDamping minDistance={3} maxDistance={13} autoRotate={!calm} autoRotateSpeed={.6}
+          <OrbitControls ref={ctrl} enableZoom={!wide && touch} enableDamping minDistance={3} maxDistance={13} autoRotate={!calm} autoRotateSpeed={.6}
             onStart={() => { clearTimeout(idle.current); if (ctrl.current) ctrl.current.autoRotate = false; }}
             onEnd={() => { idle.current = window.setTimeout(() => { if (ctrl.current && !api.current.paused && !calm) ctrl.current.autoRotate = true; }, 3000); }} />
         </Canvas>
