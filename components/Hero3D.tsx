@@ -105,7 +105,7 @@ export default function Hero3D({ onReady }: { onReady?: () => void }) {
             onEnd={() => { idle.current = window.setTimeout(() => { if (ctrl.current && !api.current.paused && !calm) ctrl.current.autoRotate = true; }, 3000); }} />
         </Canvas>
       </div>
-      <div className="absolute right-4 top-24 z-30 flex flex-wrap items-center justify-end gap-2">
+      <div className="absolute right-3 top-3 z-30 flex flex-wrap items-center justify-end gap-2 lg:right-4 lg:top-24">
         {!wide && <p className="w-full text-right text-xs text-muted">Swipe up/down to scroll · drag the 3D view to rotate</p>}
         <button className="btn btn-s !min-h-[36px] !py-1 text-sm" onClick={() => { ctrl.current?.reset(); api.current.clear?.(); }} aria-label="Reset camera view">Reset view</button>
         <button className="btn btn-s !min-h-[36px] !py-1 text-sm" onClick={toggle} aria-label={paused ? "Resume animation" : "Pause animation"}>{paused ? "Resume" : "Pause"}</button>

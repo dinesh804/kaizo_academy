@@ -39,17 +39,21 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
   return (
-    <section ref={root} id="home" className="relative flex min-h-[100svh] items-end overflow-hidden bg-bg pb-14 pt-28 lg:items-center">
-      <div className="h-vis absolute inset-0"><HeroVisual /></div>
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-bg via-bg/60 to-transparent lg:bg-gradient-to-r lg:from-bg lg:via-bg/55 lg:to-transparent" />
-      <div className="pointer-events-none relative z-20 mx-auto w-full max-w-7xl px-5">
+    <section ref={root} id="home" className="relative flex min-h-[100svh] flex-col justify-center gap-6 overflow-hidden bg-bg pb-8 pt-24 lg:flex-row lg:items-center lg:gap-0 lg:pb-14 lg:pt-28">
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-5">
         <div className="max-w-xl">
           <div className="h-logo"><Logo size="lg" /></div>
           <p className="h-line mt-6 text-sm tracking-widest text-cyan">IMAGINE. IMPROVE. INNOVATE.</p>
           <h1 className="h-line mt-3 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">DON'T JUST LEARN AI. <span className="grad">BUILD IT.</span></h1>
           <p className="h-line mt-6 text-lg text-muted">Transform your curiosity into real-world technology skills through practical learning, innovative projects and expert guidance.</p>
-          <div className="pointer-events-auto mt-8 flex flex-wrap gap-4"><a href="/academy" className="h-cta btn btn-p">EXPLORE COURSES</a><a href="/#contact" className="h-cta btn btn-s">ENROL NOW</a></div>
+          <div className="pointer-events-auto mt-8 hidden flex-wrap gap-4 lg:flex"><a href="/academy" className="h-cta btn btn-p">EXPLORE COURSES</a><a href="/#contact" className="h-cta btn btn-s">ENROL NOW</a></div>
         </div>
+      </div>
+      <div className="h-vis relative z-0 mx-4 h-[30svh] min-h-[220px] max-h-[320px] shrink-0 overflow-hidden rounded-2xl border border-cyan/25 sm:mx-5 lg:absolute lg:inset-0 lg:mx-0 lg:h-full lg:max-h-none lg:rounded-none lg:border-0"><HeroVisual /></div>
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-10 hidden bg-gradient-to-t from-bg via-bg/60 to-transparent lg:block lg:bg-gradient-to-r lg:from-bg lg:via-bg/55 lg:to-transparent" />
+      <div className="relative z-20 mx-4 flex shrink-0 flex-col gap-3 pb-4 sm:mx-auto sm:w-auto sm:flex-row sm:justify-center lg:hidden">
+        <a href="/academy" className="h-cta btn btn-p w-full justify-center sm:w-auto">EXPLORE COURSES</a>
+        <a href="/#contact" className="h-cta btn btn-s w-full justify-center sm:w-auto">ENROL NOW</a>
       </div>
     </section>);
 }
