@@ -39,7 +39,7 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
   return (
-    <section ref={root} id="home" className="relative flex min-h-[100svh] items-end overflow-hidden bg-bg pb-14 pt-28 lg:items-center">
+    <section ref={root} id="home" className="relative flex min-h-[78svh] items-end overflow-hidden bg-bg pb-12 pt-24 lg:min-h-[76svh] lg:items-center">
       <div className="h-vis absolute inset-0"><HeroVisual /></div>
       <div aria-hidden className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-bg via-bg/60 to-transparent lg:bg-gradient-to-r lg:from-bg lg:via-bg/55 lg:to-transparent" />
       <div className="pointer-events-none relative z-20 mx-auto w-full max-w-7xl px-5">

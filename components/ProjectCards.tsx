@@ -9,12 +9,12 @@ export function Cover({ p }: { p: Project }) {
 export const Tech = ({ items }: { items: string[] }) => <ul className="flex flex-wrap gap-2 text-xs text-muted">{items.map(t => <li key={t} className="rounded-full border border-white/10 px-3 py-1">{t}</li>)}</ul>;
 export default function ProjectCards() {
   return (
-    <section id="projects" className="py-20"><div className="mx-auto max-w-7xl px-5">
+    <section id="projects" className="py-12 sm:py-14"><div className="mx-auto max-w-7xl px-5">
       <h2 className="font-display text-3xl font-bold sm:text-4xl">Project showcase</h2>
       <p className="mt-4 max-w-2xl text-muted">Research and development work from KAIZO LABS. Cover images are illustrative concept visuals unless marked as screenshots.</p>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {projects.map(p => (
-          <article key={p.slug} className="glass flex h-full flex-col rounded-2xl p-5">
+          <article key={p.slug} className="glass flex h-full flex-col rounded-xl p-4">
             <Cover p={p} />
             <span className="tag mt-4 w-fit">{p.label}</span>
             <h3 className="mt-3 font-display text-xl font-semibold">{p.title}</h3>

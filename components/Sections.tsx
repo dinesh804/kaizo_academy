@@ -4,28 +4,34 @@ import { motion } from "framer-motion";
 import { ChevronDown, BookOpen, Code2, Hammer, Rocket, Trophy, CheckCircle2 } from "lucide-react";
 import { divisions, benefits, extras, journey, modules, programMeta, projects } from "@/lib/content";
 const Section = ({ id, title, sub, children, alt, cream }: { id: string; title: string; sub?: string; children: React.ReactNode; alt?: boolean; cream?: boolean }) => (
-  <section id={id} className={`py-20 ${alt ? "bg-bg2" : ""} ${cream ? "cream" : ""}`}>
+  <section id={id} className={`py-12 sm:py-14 ${alt ? "bg-bg2" : ""} ${cream ? "cream" : ""}`}>
     <div className="mx-auto max-w-7xl px-5">
       <h2 className="max-w-3xl font-display text-3xl font-bold sm:text-4xl">{title}</h2>
       {sub && <p className="mt-4 max-w-2xl text-muted">{sub}</p>}
-      <div className="mt-12">{children}</div>
+      <div className="mt-6 sm:mt-8">{children}</div>
     </div>
   </section>);
 export function Divisions() {
   return (
     <Section id="divisions" title="Where we're headed." sub="These are our intended divisions. Status labels show what is launched and what is still planned.">
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         {divisions.map(d => (
-          <article key={d.n} className="glass rounded-2xl p-7 transition-colors">
+          <article key={d.n} className="glass rounded-2xl p-5 transition-colors">
             <div className="flex items-start justify-between gap-3">
               <h3 className="font-display text-xl font-bold grad">{d.n}</h3><span className="tag shrink-0">{d.status}</span>
             </div>
             <p className="mt-1 text-sm text-cyan">{d.s}</p>
-            <p className="mt-3 text-muted">{d.d}</p>
-            <ul className="mt-4 flex flex-wrap gap-2 text-xs text-muted">{d.f.map(f => <li key={f} className="rounded-full border border-white/10 px-3 py-1">{f}</li>)}</ul>
-            <a href={d.href} className="btn btn-s mt-6 !py-2">{d.cta}</a>
+            <p className="mt-2 text-sm text-muted">{d.d}</p>
+            <ul className="mt-3 flex flex-wrap gap-2 text-xs text-muted">{d.f.slice(0, 5).map(f => <li key={f} className="rounded-full border border-white/10 px-3 py-1">{f}</li>)}</ul>
+            <a href={d.href} className="btn btn-s mt-4 !py-2">{d.cta}</a>
           </article>))}
       </div>
+      <details id="benefits" className="glass mt-4 rounded-xl p-4">
+        <summary className="cursor-pointer font-semibold">How learning works and learner benefits</summary>
+        <ol id="journey" className="mt-4 grid gap-2 sm:grid-cols-5">{journey.map(([title, desc], i) => <li key={title} className="rounded-lg border border-white/10 p-3"><span className="text-xs text-cyan">0{i + 1}</span><h3 className="font-semibold">{title}</h3><p className="text-xs text-muted">{desc}</p></li>)}</ol>
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{benefits.map(([title, desc]) => <li key={title} className="text-sm"><b>{title}</b><span className="text-muted"> — {desc}</span></li>)}</ul>
+        <details className="mt-3 text-sm"><summary className="cursor-pointer text-muted">Additional planned learner benefits</summary><ul className="mt-2 flex flex-wrap gap-2">{extras.map(item => <li key={item} className="tag">{item} · Planned</li>)}</ul></details>
+      </details>
     </Section>);
 }
 export function Benefits() {

@@ -5,7 +5,7 @@ import { CourseCards } from "@/components/Courses";
 import AboutStrong from "@/components/AboutStrong";
 import ProjectCards from "@/components/ProjectCards";
 import Footer from "@/components/Footer";
-import { Divisions, Benefits, Journey } from "@/components/Sections";
+import { Divisions } from "@/components/Sections";
 export default function Home() {
-  return (<><Nav /><main><Hero /><Divisions /><Benefits /><Journey /><CourseCards /><ProjectCards /><AboutStrong /><Contact /></main><Footer /></>);
+  return (<><Nav /><main><Hero /><Divisions /><CourseCards /><ProjectCards /><AboutStrong /><Contact /></main><Footer /></>);
 }

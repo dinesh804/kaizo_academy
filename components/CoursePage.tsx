@@ -7,9 +7,9 @@ const S = ({ title, children, alt }: { title: string; children: React.ReactNode;
   <section className={`py-14 ${alt ? "bg-bg2" : ""}`}><div className="mx-auto max-w-7xl px-5"><h2 className="font-display text-2xl font-bold sm:text-3xl">{title}</h2><div className="mt-6">{children}</div></div></section>);
 const List = ({ items }: { items: string[] }) => <ul className="grid gap-2 text-muted sm:grid-cols-2 lg:grid-cols-3">{items.map(i => <li key={i}>• {i}</li>)}</ul>;
 export default function CoursePage({ c }: { c: Course }) {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
   return (<><Nav /><main className="pt-16">
-    <section className="relative overflow-hidden py-20"><div className="mx-auto max-w-7xl px-5">
+    <section className="relative overflow-hidden py-14 sm:py-16"><div className="mx-auto max-w-7xl px-5">
       <span className="tag">{c.level}</span>
       <h1 className="mt-4 max-w-4xl font-display text-4xl font-bold sm:text-5xl grad">{c.n}</h1>
       <p className="mt-3 text-xl text-cyan">{c.tag}</p>

@@ -22,7 +22,7 @@ export default function Contact({ programme }: { programme?: string }) {
   const f = "mt-1 block w-full min-w-0 max-w-full rounded-lg border border-white/15 bg-bg2 p-3 text-white";
   const Err = ({ k }: { k: string }) => errs[k] ? <p role="alert" className="mt-1 text-sm text-magenta">{errs[k]}</p> : null;
   return (
-    <section id="contact" className="py-14 sm:py-20"><div className="mx-auto grid min-w-0 max-w-7xl gap-8 px-4 sm:gap-12 sm:px-5 lg:grid-cols-3">
+    <section id="contact" className="py-12 sm:py-14"><div className="mx-auto grid min-w-0 max-w-7xl gap-6 px-4 sm:gap-8 sm:px-5 lg:grid-cols-3">
       <div className="min-w-0"><h2 className="font-display text-3xl font-bold">Start a conversation</h2>
         <p className="mt-4 text-muted">Ask about the programme or request a free introductory session.</p>
         <div className="mt-6 flex flex-col gap-3">

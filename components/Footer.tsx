@@ -1,7 +1,7 @@
 import Logo from "./Logo";
 const cols: [string, [string, string][]][] = [
  ["Company", [["About", "/#about"], ["Research", "/#divisions"], ["Projects", "/#projects"]]],
- ["Academy", [["Programs", "/academy"], ["Student Benefits", "/#benefits"], ["Learning Journey", "/#journey"], ["Contact", "/#contact"]]],
+ ["Academy", [["Programs", "/academy"], ["Course comparison", "/academy#compare"], ["Contact", "/#contact"]]],
  ["Resources", [["Blog", "/blog"], ["Tutorials", "/#"], ["FAQs", "/#"], ["Privacy Policy", "/#"], ["Terms and Conditions", "/#"]]]];
 export default function Footer() {
   return (
