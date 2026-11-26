@@ -87,7 +87,6 @@ export default function Hero3D({ onReady }: { onReady?: () => void }) {
   const api = useRef<NeuralApi>({ paused: false }), ctrl = useRef<any>(null), pulse = useRef<() => void>(() => {}), idle = useRef<number>();
   const [paused, setPaused] = useState(false);
   const wide = useMemo(() => innerWidth >= 1024, []);
-  const [touch, setTouch] = useState(wide); // on phones the background lets the page scroll until "Touch control" is switched on
   const calm = useMemo(() => matchMedia("(prefers-reduced-motion: reduce)").matches, []);
   const hi = useMemo(() => innerWidth >= 768, []);
   useEffect(() => { // GSAP camera dolly-in on load; the saved state is the final view, so Reset returns to it
@@ -97,17 +96,17 @@ export default function Hero3D({ onReady }: { onReady?: () => void }) {
   const toggle = () => { const p = !api.current.paused; api.current.paused = p; setPaused(p); if (ctrl.current) ctrl.current.autoRotate = !p && !calm; };
   return (
     <div className="absolute inset-0">
-      <div className="absolute inset-0" style={{ pointerEvents: touch ? "auto" : "none" }} role="img" aria-label="Interactive 3D golden neural core. Drag to rotate, pinch to zoom on touch devices, and click the core to send a pulse.">
-        <Canvas onPointerMissed={() => api.current.clear?.()} onCreated={() => onReady?.()} dpr={hi ? [1, 2] : [1, 1.5]} camera={{ position: [0, .9, wide ? { knot: 6.2, brain: 5.4, sphere: 7 }[HERO_SHAPE] : { knot: 9.5, brain: 8, sphere: 10 }[HERO_SHAPE]], fov: 42 }} frameloop={calm ? "demand" : "always"} gl={{ antialias: true, powerPreference: "high-performance" }}>
+      <div className="absolute inset-0" role="img" aria-label="Interactive 3D golden neural core. Swipe vertically to scroll the page, drag horizontally to rotate the model, and pinch to zoom.">
+        <Canvas style={{ touchAction: wide ? "auto" : "pan-y" }} onPointerMissed={() => api.current.clear?.()} onCreated={() => onReady?.()} dpr={hi ? [1, 2] : [1, 1.5]} camera={{ position: [0, .9, wide ? { knot: 6.2, brain: 5.4, sphere: 7 }[HERO_SHAPE] : { knot: 9.5, brain: 8, sphere: 10 }[HERO_SHAPE]], fov: 42 }} frameloop={calm ? "demand" : "always"} gl={{ antialias: true, powerPreference: "high-performance" }}>
           <Scene api={api} calm={calm} hi={hi} pulseRef={pulse} />
           {hi && !calm && <EffectComposer multisampling={0}><Bloom mipmapBlur luminanceThreshold={.55} intensity={.8} /></EffectComposer>}
-          <OrbitControls ref={ctrl} enableZoom={!wide && touch} enableDamping minDistance={3} maxDistance={13} autoRotate={!calm} autoRotateSpeed={.6}
+          <OrbitControls ref={ctrl} enableZoom={!wide} enableDamping minDistance={3} maxDistance={13} autoRotate={!calm} autoRotateSpeed={.6}
             onStart={() => { clearTimeout(idle.current); if (ctrl.current) ctrl.current.autoRotate = false; }}
             onEnd={() => { idle.current = window.setTimeout(() => { if (ctrl.current && !api.current.paused && !calm) ctrl.current.autoRotate = true; }, 3000); }} />
         </Canvas>
       </div>
       <div className="absolute right-4 top-24 z-30 flex flex-wrap items-center justify-end gap-2">
-        {!wide && <button className="btn btn-s !min-h-[36px] !py-1 text-sm" onClick={() => setTouch(!touch)}>{touch ? "Back to scrolling" : "Touch control"}</button>}
+        {!wide && <p className="w-full text-right text-xs text-muted">Swipe up/down to scroll · drag the 3D view to rotate</p>}
         <button className="btn btn-s !min-h-[36px] !py-1 text-sm" onClick={() => { ctrl.current?.reset(); api.current.clear?.(); }} aria-label="Reset camera view">Reset view</button>
         <button className="btn btn-s !min-h-[36px] !py-1 text-sm" onClick={toggle} aria-label={paused ? "Resume animation" : "Pause animation"}>{paused ? "Resume" : "Pause"}</button>
       </div>
