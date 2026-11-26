@@ -2,7 +2,7 @@ import ProjectArt from "./ProjectArt";
 import { projects, type Project } from "@/lib/projects";
 export function Cover({ p }: { p: Project }) {
   const shot = p.screenshots[0];
-  return (<div className="relative aspect-video overflow-hidden rounded-xl border border-cyan/30 bg-bg">
+  return (<div className="relative aspect-video overflow-hidden rounded-xl border border-neon/30 bg-bg">
     {shot ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={shot} alt={`${p.title} screenshot`} loading="lazy" className="h-full w-full object-cover" /> : <ProjectArt kind={p.art} />}
     <span className="absolute bottom-2 left-2 rounded bg-bg/85 px-2 py-0.5 text-[10px] tracking-wider text-muted">{shot ? "SCREENSHOT" : "ILLUSTRATIVE CONCEPT VISUAL"}</span></div>);
 }

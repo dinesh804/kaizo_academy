@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 const Scene = dynamic(() => import("./CourseGemScene"), { ssr: false });
-const Fallback = () => <svg viewBox="0 0 100 100" className="mx-auto h-full w-auto p-4" aria-hidden><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" fill="none" stroke="#FFD700" strokeWidth="2" /><polygon points="50,28 70,39 70,61 50,72 30,61 30,39" fill="#FFD700" opacity=".8" /></svg>;
+const Fallback = () => <svg viewBox="0 0 100 100" className="mx-auto h-full w-auto p-4" aria-hidden><polygon points="50,8 88,29 88,71 50,92 12,71 12,29" fill="none" stroke="#E63946" strokeWidth="2" /><polygon points="50,28 70,39 70,61 50,72 30,61 30,39" fill="#E63946" opacity=".8" /></svg>;
 export default function CourseGem({ kind }: { kind: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [on, setOn] = useState(false), [gl, setGl] = useState(true), [calm, setCalm] = useState(false);

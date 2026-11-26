@@ -9,7 +9,7 @@ export default function HeroVisual() {
   useEffect(() => { try { const c = document.createElement("canvas"); setOk(!!(c.getContext("webgl2") || c.getContext("webgl"))); } catch { setOk(false); } }, []);
   return (<div className="hero-bg absolute inset-0">
     {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/hero-brain.jpg" alt="" aria-hidden fetchPriority="high" className={`absolute inset-0 h-full w-full object-cover object-[70%_50%] transition-opacity duration-1000 ${ready ? "opacity-0" : "opacity-70"}`} />
+    <img src="/hero-brain-crimson.png" alt="" aria-hidden fetchPriority="high" className={`absolute inset-0 h-full w-full object-cover object-[70%_50%] transition-opacity duration-1000 ${ready ? "opacity-0" : "opacity-70"}`} />
     {ok && <Hero3D onReady={() => setReady(true)} />}
   </div>);
 }

@@ -10,23 +10,23 @@ void main(){ vP=position; vF=aF; vN=normalize(normalMatrix*normal); vec4 mv=mode
 const surfF = `uniform float uT; uniform float uW; varying vec3 vP; varying vec3 vN; varying vec3 vV; varying float vF;
 void main(){ vec3 N=normalize(vN),V=normalize(vV),L=normalize(vec3(.5,.8,.6)),R=reflect(-V,N);
  float dif=max(dot(N,L),0.), spec=pow(max(dot(R,L),0.),60.), fr=pow(1.-max(dot(N,V),0.),3.), env=pow(clamp(R.y*.5+.5,0.,1.),3.);
- vec3 c=mix(vec3(.012,.01,.005),vec3(.38,.29,.07),dif*.6+.04)*(1.-vF*.7);
- c+=mix(vec3(.03,.02,.01),vec3(1.,.8,.35),env)*.35*(1.-vF*.6); c+=vec3(1.,.95,.75)*spec*.9*(1.-vF); c+=vec3(1.,.72,.05)*fr*.7;
- float flow=pow(sin(vP.y*4.+vP.z*3.-uT*1.6+vP.x*2.)*.5+.5,5.); c+=vec3(1.,.78,.08)*vF*(.3+flow*1.0);
- float w=exp(-pow((vP.y-(uW*3.2-1.6))*3.,2.))*step(0.,uW)*step(uW,1.); c+=vec3(1.,.9,.5)*w*1.2; gl_FragColor=vec4(c,1.); }`;
+ vec3 c=mix(vec3(.012,.01,.01),vec3(.32,.035,.06),dif*.6+.04)*(1.-vF*.7);
+ c+=mix(vec3(.03,.02,.02),vec3(.71,.07,.15),env)*.35*(1.-vF*.6); c+=vec3(1.,.54,.57)*spec*.9*(1.-vF); c+=vec3(.9,.22,.27)*fr*.7;
+ float flow=pow(sin(vP.y*4.+vP.z*3.-uT*1.6+vP.x*2.)*.5+.5,5.); c+=vec3(.9,.22,.27)*vF*(.3+flow*1.0);
+ float w=exp(-pow((vP.y-(uW*3.2-1.6))*3.,2.))*step(0.,uW)*step(uW,1.); c+=vec3(1.,.25,.31)*w*1.2; gl_FragColor=vec4(c,1.); }`;
 const glassF = `uniform float uT; uniform float uW; varying vec3 vP; varying vec3 vN; varying vec3 vV; varying float vF;
 void main(){ vec3 N=normalize(vN),V=normalize(vV); float fr=pow(1.-abs(dot(N,V)),2.5); float scan=pow(max(sin(vP.y*7.-uT*1.4),0.),16.)*.25;
- float w=exp(-pow((vP.y-(uW*3.4-1.7))*3.,2.))*step(0.,uW)*step(uW,1.); vec3 c=vec3(1.,.78,.15)*(fr*.9+.05+scan)+vec3(1.,.9,.5)*w; gl_FragColor=vec4(c,fr*.55+.03+scan*.5+w*.5); }`;
+ float w=exp(-pow((vP.y-(uW*3.4-1.7))*3.,2.))*step(0.,uW)*step(uW,1.); vec3 c=vec3(.71,.07,.15)*(fr*.9+.05+scan)+vec3(1.,.25,.31)*w; gl_FragColor=vec4(c,fr*.55+.03+scan*.5+w*.5); }`;
 const nodeV = `attribute vec3 aPos; attribute float aRad; attribute float aInt; attribute float aAct; attribute float aSel; varying vec2 vU; varying float vB;
 void main(){ vU=position.xy; vB=aInt*.6+aAct*1.4+aSel*1.2; vec4 mv=modelViewMatrix*vec4(aPos,1.); mv.xy+=position.xy*aRad*3.*(1.+aAct*.9+aSel*.8); gl_Position=projectionMatrix*mv; }`;
 const nodeF = `varying vec2 vU; varying float vB; void main(){ float d=length(vU); if(d>1.) discard; float core=smoothstep(.34,0.,d), halo=pow(smoothstep(1.,0.,d),2.);
- gl_FragColor=vec4(mix(vec3(1.,.7,.08),vec3(1.,.96,.7),core),(core+halo*.55)*clamp(vB,0.,1.6)); }`;
+ gl_FragColor=vec4(mix(vec3(.71,.07,.15),vec3(1.,.54,.57),core),(core+halo*.55)*clamp(vB,0.,1.6)); }`;
 const edgeV = `attribute float aT; attribute float aH; attribute float aL; varying float vH; varying float vL; void main(){ vH=aH; vL=aL; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
-const edgeF = `varying float vH; varying float vL; void main(){ gl_FragColor=vec4(1.,.78,.15,(vL>.5?.34:.22)+vH*.7); }`;
+const edgeF = `varying float vH; varying float vL; void main(){ gl_FragColor=vec4(.9,.22,.27,(vL>.5?.34:.22)+vH*.7); }`;
 const sigV = `attribute vec3 aA; attribute vec3 aC; attribute vec3 aB; attribute float aP; attribute float aK; attribute float aBr; uniform float uDpr; varying float vA; varying float vHead;
 void main(){ float tp=aP-aK*.035; float t=clamp(tp,0.,1.),u=1.-t; vec3 p=u*u*aA+2.*u*t*aC+t*t*aB;
  vA=aBr*(1.-aK/${K}.)*step(0.,tp)*step(aP,1.02); vHead=step(aK,.5); vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv; gl_PointSize=uDpr*(aK<.5?8.:4.5)*(5./(-mv.z)); }`;
-const sigF = `varying float vA; varying float vHead; void main(){ float d=length(gl_PointCoord-.5)*2.; float a=smoothstep(1.,0.,d); gl_FragColor=vec4(mix(vec3(1.,.72,.1),vec3(1.,.97,.8),vHead*a),a*a*vA); }`;
+const sigF = `varying float vA; varying float vHead; void main(){ float d=length(gl_PointCoord-.5)*2.; float a=smoothstep(1.,0.,d); gl_FragColor=vec4(mix(vec3(.71,.07,.15),vec3(1.,.54,.57),vHead*a),a*a*vA); }`;
 type Net = { geo: THREE.BufferGeometry; g: Graph; edgeGeo: THREE.BufferGeometry; start: Uint32Array; cnt: Uint16Array; act: Float32Array; sel: Float32Array; source: string };
 type Info = { id: number; layer: number; hub: boolean; cereb: boolean; deg: number; at: [number, number, number] };
 export type NeuralApi = { paused: boolean; sel?: boolean; clear?: () => void };
@@ -85,7 +85,7 @@ export default function NeuralBrain({ api, hi, calm, pulseRef }: { api: React.Mu
     <lineSegments geometry={net.edgeGeo} frustumCulled={false}><shaderMaterial vertexShader={edgeV} fragmentShader={edgeF} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></lineSegments>
     <mesh geometry={nodeGeo} frustumCulled={false}><shaderMaterial vertexShader={nodeV} fragmentShader={nodeF} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></mesh>
     {M > 0 && <points geometry={sigGeo} frustumCulled={false}><shaderMaterial vertexShader={sigV} fragmentShader={sigF} uniforms={sigU} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></points>}
-    {info && <Html position={info.at} center style={{ pointerEvents: "none" }}><div className="glass w-44 rounded-lg border border-cyan/60 p-3 text-left text-xs" style={{ boxShadow: "0 0 18px rgba(255,215,0,.35)" }}>
-      <p className="font-display text-cyan">NODE #{info.id}</p><p className="mt-1 text-muted">{info.hub ? "Neural hub" : "Surface node"} · {HERO_SHAPE === "sphere" ? ["Outer shell", "Middle layer", "Inner core"][info.layer] ?? "Core" : HERO_SHAPE === "knot" ? "KAIZO core" : info.cereb ? "Cerebellum" : "Cerebrum"}</p><p className="text-muted">{info.deg} connections</p></div></Html>}
+    {info && <Html position={info.at} center style={{ pointerEvents: "none" }}><div className="glass w-44 rounded-lg border border-neon/60 p-3 text-left text-xs" style={{ boxShadow: "0 0 18px rgba(230,57,70,.35)" }}>
+      <p className="font-display text-neon">NODE #{info.id}</p><p className="mt-1 text-muted">{info.hub ? "Neural hub" : "Surface node"} · {HERO_SHAPE === "sphere" ? ["Outer shell", "Middle layer", "Inner core"][info.layer] ?? "Core" : HERO_SHAPE === "knot" ? "KAIZO core" : info.cereb ? "Cerebellum" : "Cerebrum"}</p><p className="text-muted">{info.deg} connections</p></div></Html>}
   </group>);
 }

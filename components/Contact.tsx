@@ -20,7 +20,7 @@ export default function Contact({ programme }: { programme?: string }) {
     } finally { busy.current = false; }
   }
   const f = "mt-1 block w-full min-w-0 max-w-full rounded-lg border border-white/15 bg-bg2 p-3 text-white";
-  const Err = ({ k }: { k: string }) => errs[k] ? <p role="alert" className="mt-1 text-sm text-magenta">{errs[k]}</p> : null;
+  const Err = ({ k }: { k: string }) => errs[k] ? <p role="alert" className="mt-1 text-sm text-crimson-soft">{errs[k]}</p> : null;
   return (
     <section id="contact" className="py-12 sm:py-14"><div className="mx-auto grid min-w-0 max-w-7xl gap-6 px-4 sm:gap-8 sm:px-5 lg:grid-cols-3">
       <div className="min-w-0"><h2 className="font-display text-3xl font-bold">Start a conversation</h2>
@@ -46,7 +46,7 @@ export default function Contact({ programme }: { programme?: string }) {
           <label className="min-w-0 md:col-span-2">Current education or professional status (optional)<input name="status" maxLength={200} className={f} /></label>
           <label className="min-w-0 md:col-span-2">Message<textarea name="message" rows={4} required maxLength={3000} className={`${f} resize-y`} /><Err k="message" /></label>
           <div className="min-w-0 md:col-span-2"><button className="btn btn-p w-full justify-center sm:w-auto" disabled={st === "sending"}>{st === "sending" ? "Sending…" : "Send enquiry"}</button>
-            {st === "error" && <p role="alert" className="mt-3 break-words text-magenta">{msg}{code && <span className="text-muted"> (Ref: {code})</span>} <a href={mailto} className="underline">Send by email instead</a></p>}</div>
+            {st === "error" && <p role="alert" className="mt-3 break-words text-crimson-soft">{msg}{code && <span className="text-muted"> (Ref: {code})</span>} <a href={mailto} className="underline">Send by email instead</a></p>}</div>
         </div>)}
       </form></div></section>);
 }

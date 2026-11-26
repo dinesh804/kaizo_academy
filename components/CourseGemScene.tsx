@@ -2,7 +2,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-const G = "#FFD700", D = "#D4AF37", C = "#F5E6B8";
+const G = "#E63946", D = "#B51226", C = "#FF8992";
 function Net() { // Course 1: 3-layer neural network
   const L = [3, 4, 3], pts = useMemo(() => L.flatMap((n, l) => Array.from({ length: n }, (_, i) => new THREE.Vector3((l - 1) * 1.3, (i - (n - 1) / 2) * .7, 0))), []);
   const geo = useMemo(() => { const v: THREE.Vector3[] = []; pts.forEach(a => pts.forEach(b => { if (b.x - a.x > 1 && b.x - a.x < 1.4) v.push(a, b); })); return new THREE.BufferGeometry().setFromPoints(v); }, [pts]);

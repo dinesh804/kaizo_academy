@@ -1,15 +1,15 @@
-// Custom concept artwork (illustrative, NOT application screenshots). Black and gold.
+// Per-project concept artwork (illustrative, not application screenshots), styled in black and crimson.
 const Base = ({ id, children }: { id: string; children: React.ReactNode }) => (
   <svg viewBox="0 0 640 360" className="h-full w-full" role="img" aria-label="Illustrative concept artwork" preserveAspectRatio="xMidYMid slice">
     <defs>
-      <radialGradient id={`${id}g`} cx=".72" cy=".28" r=".9"><stop offset="0" stopColor="#FFD700" stopOpacity=".28" /><stop offset="1" stopColor="#080808" stopOpacity="0" /></radialGradient>
-      <linearGradient id={`${id}f`} x1="0" x2="1"><stop offset="0" stopColor="#B8860B" /><stop offset=".5" stopColor="#FFD700" /><stop offset="1" stopColor="#F5E6B8" /></linearGradient>
-      <pattern id={`${id}h`} width="28" height="48.5" patternUnits="userSpaceOnUse"><path d="M14 33L0 25V8L14 0l14 8v17zM14 48.5L0 40.5V33l14 8 14-8v7.5z" fill="none" stroke="#FFD700" strokeOpacity=".07" /></pattern>
+      <radialGradient id={`${id}g`} cx=".72" cy=".28" r=".9"><stop offset="0" stopColor="#E63946" stopOpacity=".28" /><stop offset="1" stopColor="#080808" stopOpacity="0" /></radialGradient>
+      <linearGradient id={`${id}f`} x1="0" x2="1"><stop offset="0" stopColor="#7C0D1A" /><stop offset=".5" stopColor="#E63946" /><stop offset="1" stopColor="#FF8992" /></linearGradient>
+      <pattern id={`${id}h`} width="28" height="48.5" patternUnits="userSpaceOnUse"><path d="M14 33L0 25V8L14 0l14 8v17zM14 48.5L0 40.5V33l14 8 14-8v7.5z" fill="none" stroke="#E63946" strokeOpacity=".07" /></pattern>
     </defs>
     <rect width="640" height="360" fill="#0b0b0b" /><rect width="640" height="360" fill={`url(#${id}h)`} /><rect width="640" height="360" fill={`url(#${id}g)`} />
-    {children}<rect x="1" y="1" width="638" height="358" fill="none" stroke="#D4AF37" strokeOpacity=".35" />
+    {children}<rect x="1" y="1" width="638" height="358" fill="none" stroke="#B51226" strokeOpacity=".35" />
   </svg>);
-const G = "#FFD700", D = "#D4AF37", C = "#F5E6B8";
+const G = "#E63946", D = "#B51226", C = "#FF8992";
 const Net = ({ x, cols, y0 = 80, gap = 52 }: { x: number; cols: number[]; y0?: number; gap?: number }) => {
   const pts = cols.map((n, c) => Array.from({ length: n }, (_, i) => [x + c * 60, y0 + (i + (5 - n) / 2) * 38] as const));
   return <g>{pts.slice(1).map((col, c) => col.map(([bx, by], j) => pts[c].map(([ax, ay], i) => <line key={`${c}${i}${j}`} x1={ax} y1={ay} x2={bx} y2={by} stroke={D} strokeOpacity=".3" />)))}{pts.flat().map(([px, py], i) => <circle key={i} cx={px} cy={py} r="5" fill={i % 3 ? G : C} />)}</g>;
@@ -40,13 +40,13 @@ function Sign() { const id = "sgn"; const f = [[[290, 250], [285, 220], [284, 17
 export default function ProjectArt({ kind }: { kind: "crop" | "rag" | "analytics" | "sign" }) { return kind === "crop" ? <Crop /> : kind === "rag" ? <Rag /> : kind === "analytics" ? <Analytics /> : <Sign />; }
 export function ClassroomArt() { return (
   <svg viewBox="0 0 640 480" className="h-full w-full" role="img" aria-label="Illustration of an AI learning lab with a wall display and laptops" preserveAspectRatio="xMidYMid slice">
-    <defs><linearGradient id="cf" x1="0" x2="1"><stop offset="0" stopColor="#B8860B" /><stop offset=".5" stopColor="#FFD700" /><stop offset="1" stopColor="#F5E6B8" /></linearGradient>
-      <radialGradient id="cg" cx=".5" cy=".3" r=".8"><stop offset="0" stopColor="#FFD700" stopOpacity=".22" /><stop offset="1" stopColor="#080808" stopOpacity="0" /></radialGradient></defs>
+    <defs><linearGradient id="cf" x1="0" x2="1"><stop offset="0" stopColor="#7C0D1A" /><stop offset=".5" stopColor="#E63946" /><stop offset="1" stopColor="#FF8992" /></linearGradient>
+      <radialGradient id="cg" cx=".5" cy=".3" r=".8"><stop offset="0" stopColor="#E63946" stopOpacity=".22" /><stop offset="1" stopColor="#080808" stopOpacity="0" /></radialGradient></defs>
     <rect width="640" height="480" fill="#0b0b0b" /><rect width="640" height="480" fill="url(#cg)" />
-    {[0, 1, 2, 3, 4].map(i => <rect key={i} x={60 + i * 120} y="20" width="70" height="6" rx="3" fill="#FFD700" opacity=".6" />)}
-    <rect x="130" y="60" width="380" height="200" rx="10" fill="#121212" stroke="#D4AF37" strokeOpacity=".8" />
-    <g stroke="#D4AF37" strokeOpacity=".4">{[0, 1, 2].flatMap(a => [0, 1, 2, 3].map(b => <line key={`${a}${b}`} x1={190} y1={110 + a * 40} x2={290} y2={100 + b * 36} />))}</g>
-    {[0, 1, 2].map(a => <circle key={a} cx="190" cy={110 + a * 40} r="6" fill="#FFD700" />)}{[0, 1, 2, 3].map(b => <circle key={b} cx="290" cy={100 + b * 36} r="6" fill="#F5E6B8" />)}
+    {[0, 1, 2, 3, 4].map(i => <rect key={i} x={60 + i * 120} y="20" width="70" height="6" rx="3" fill="#E63946" opacity=".6" />)}
+    <rect x="130" y="60" width="380" height="200" rx="10" fill="#121212" stroke="#B51226" strokeOpacity=".8" />
+    <g stroke="#B51226" strokeOpacity=".4">{[0, 1, 2].flatMap(a => [0, 1, 2, 3].map(b => <line key={`${a}${b}`} x1={190} y1={110 + a * 40} x2={290} y2={100 + b * 36} />))}</g>
+    {[0, 1, 2].map(a => <circle key={a} cx="190" cy={110 + a * 40} r="6" fill="#E63946" />)}{[0, 1, 2, 3].map(b => <circle key={b} cx="290" cy={100 + b * 36} r="6" fill="#FF8992" />)}
     {[0, 1, 2, 3, 4, 5].map(l => <rect key={l} x="340" y={95 + l * 22} width={l % 3 ? 120 : 80} height="6" rx="3" fill="url(#cf)" opacity=".7" />)}
-    {[0, 1, 2].map(i => <g key={i} transform={`translate(${70 + i * 170} 330)`}><path d="M10 0h110l20 70H-10z" fill="#141414" stroke="#D4AF37" strokeOpacity=".7" /><path d="M30 8h70l10 40H20z" fill="#FFD700" opacity=".18" /><rect x="-20" y="80" width="170" height="10" rx="4" fill="#D4AF37" opacity=".5" /></g>)}
-    <rect x="1" y="1" width="638" height="478" fill="none" stroke="#D4AF37" strokeOpacity=".35" /></svg>); }
+    {[0, 1, 2].map(i => <g key={i} transform={`translate(${70 + i * 170} 330)`}><path d="M10 0h110l20 70H-10z" fill="#141414" stroke="#B51226" strokeOpacity=".7" /><path d="M30 8h70l10 40H20z" fill="#E63946" opacity=".18" /><rect x="-20" y="80" width="170" height="10" rx="4" fill="#B51226" opacity=".5" /></g>)}
+    <rect x="1" y="1" width="638" height="478" fill="none" stroke="#B51226" strokeOpacity=".35" /></svg>); }

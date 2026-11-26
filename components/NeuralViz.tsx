@@ -24,7 +24,7 @@ export default function NeuralViz() {
       ctx.lineWidth = 1;
       for (const [a, b] of edges) {
         const g = ctx.createLinearGradient(P[a].x, P[a].y, P[b].x, P[b].y);
-        g.addColorStop(0, "rgba(255,215,0,.16)"); g.addColorStop(1, "rgba(245,230,184,.16)");
+        g.addColorStop(0, "rgba(230,57,70,.16)"); g.addColorStop(1, "rgba(255,137,146,.16)");
         ctx.strokeStyle = g; ctx.beginPath(); ctx.moveTo(P[a].x, P[a].y); ctx.lineTo(P[b].x, P[b].y); ctx.stroke();
       }
       if (!reduce && pulses.length < 30 && Math.random() < .1) {
@@ -63,7 +63,7 @@ export default function NeuralViz() {
   }, []);
   return (
     <div className="relative aspect-[5/4] w-full max-w-xl">
-      <div aria-hidden className="absolute inset-0 rounded-full bg-violet/20 blur-3xl" />
+      <div aria-hidden className="absolute inset-0 rounded-full bg-crimson/20 blur-3xl" />
       <canvas ref={ref} role="img" aria-label="Animated neural network with glowing signals travelling between nodes" className="relative h-full w-full" />
     </div>);
 }

@@ -136,7 +136,7 @@ export function buildEdgeGeometry(g: Graph) {
 
 /** Hero centrepiece: set NEXT_PUBLIC_HERO_SHAPE=brain to bring the brain back. */
 export const HERO_SHAPE: "knot" | "brain" | "sphere" = process.env.NEXT_PUBLIC_HERO_SHAPE === "brain" ? "brain" : process.env.NEXT_PUBLIC_HERO_SHAPE === "knot" ? "knot" : "sphere";
-/** Golden neural knot: a (2,3) torus knot, the "infinity loop" of continuous improvement. Ring grooves along the tube give it a segmented, engineered look. */
+/** Crimson neural knot: a (2,3) torus knot, the "infinity loop" of continuous improvement. Ring grooves along the tube give it a segmented, engineered look. */
 export function buildKnotGeometry(hi: boolean) {
   const g = new THREE.TorusKnotGeometry(1, .3, hi ? 420 : 220, hi ? 72 : 40, 2, 3).toNonIndexed(), uv = g.attributes.uv, f = new Float32Array(uv.count);
   for (let i = 0; i < uv.count; i++) f[i] = ss(.86, 1, Math.sin(uv.getX(i) * Math.PI * 2 * 90)) * .9;
@@ -144,7 +144,7 @@ export function buildKnotGeometry(hi: boolean) {
   return { geo: g, brainTris: Infinity };
 }
 
-/** Golden intelligence core: three concentric shells (outer 1.7, middle 1.25, inner 0.8). Nodes are area-weighted across all shells, so the outer shell is densest. */
+/** Crimson intelligence core: three concentric shells (outer 1.7, middle 1.25, inner 0.8). Nodes are area-weighted across all shells, so the outer shell is densest. */
 export function buildSphereGeometry(hi: boolean) {
   const layers = [[1.7, hi ? 30 : 18], [1.25, hi ? 22 : 14], [.8, hi ? 14 : 10]], PP: ArrayLike<number>[] = [], NN: ArrayLike<number>[] = [], bounds: number[] = []; let tris = 0;
   layers.forEach(([r, d], li) => { const g = new THREE.IcosahedronGeometry(r, d); PP.push(g.attributes.position.array); NN.push(g.attributes.normal.array); tris += g.attributes.position.count / 3; if (li < layers.length - 1) bounds.push(tris); });

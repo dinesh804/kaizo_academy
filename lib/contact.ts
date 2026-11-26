@@ -41,7 +41,7 @@ export function buildEmail(data: ContactData) {
     ["Message", data.message],
   ] as const;
   const text = ["KAIZO LABS – NEW WEBSITE ENQUIRY", ...fields.map(([label, value]) => `${label}: ${value}`)].join("\n\n");
-  const rows = fields.map(([label, value]) => `<tr><th align="left" style="padding:8px 12px;color:#D4AF37">${escapeHtml(label)}</th><td style="padding:8px 12px">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`).join("");
-  const html = `<div style="font-family:Arial,sans-serif;color:#222"><h1 style="font-size:20px;color:#D4AF37">KAIZO LABS – NEW WEBSITE ENQUIRY</h1><table style="border-collapse:collapse">${rows}</table></div>`;
+  const rows = fields.map(([label, value]) => `<tr><th align="left" style="padding:8px 12px;color:#B51226">${escapeHtml(label)}</th><td style="padding:8px 12px">${escapeHtml(value).replace(/\n/g, "<br>")}</td></tr>`).join("");
+  const html = `<div style="font-family:Arial,sans-serif;color:#222"><h1 style="font-size:20px;color:#B51226">KAIZO LABS – NEW WEBSITE ENQUIRY</h1><table style="border-collapse:collapse">${rows}</table></div>`;
   return { subject, text, html };
 }

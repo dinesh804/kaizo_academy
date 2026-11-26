@@ -15,10 +15,10 @@ float hd(vec2 p){p=abs(p);return max(dot(p,normalize(vec2(1.,1.73))),p.x);}
 void main(){ vec2 uv=vU*vec2(40.,6.); vec2 r=vec2(1.,1.73),h=r*.5; vec2 a=mod(uv,r)-h,b=mod(uv-h,r)-h; vec2 g=dot(a,a)<dot(b,b)?a:b; vec2 id=uv-g;
  float e=smoothstep(.05,0.,abs(.5-hd(g))); float rn=fract(sin(dot(floor(id),vec2(12.9,78.2)))*43758.5);
  float al=e*(.12+.7*step(.92,rn)*(.5+.5*sin(uT*1.5+rn*30.))); al*=smoothstep(0.,.25,vU.y)*smoothstep(1.,.75,vU.y);
- gl_FragColor=vec4(1.,.75,.1,al); }`;
+ gl_FragColor=vec4(.9,.22,.27,al); }`;
 const edgeV = `attribute float aT; attribute float aS; varying float vT; varying float vS; void main(){ vT=aT; vS=aS; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
-const edgeF = `uniform float uT; uniform float uB; varying float vT; varying float vS; void main(){ float p=pow(1.-fract(vT-uT*.35+vS),8.); gl_FragColor=vec4(1.,.84,0.,.12+p*.9+uB*.3); }`;
-const haloF = `varying vec2 vU; void main(){ float d=length(vU-.5)*2.; gl_FragColor=vec4(1.,.78,.1,smoothstep(.15,.5,d)*(1.-smoothstep(.5,1.,d))*.22); }`;
+const edgeF = `uniform float uT; uniform float uB; varying float vT; varying float vS; void main(){ float p=pow(1.-fract(vT-uT*.35+vS),8.); gl_FragColor=vec4(.71,.07,.15,.12+p*.9+uB*.3); }`;
+const haloF = `varying vec2 vU; void main(){ float d=length(vU-.5)*2.; gl_FragColor=vec4(.9,.22,.27,smoothstep(.15,.5,d)*(1.-smoothstep(.5,1.,d))*.22); }`;
 const haloV = `varying vec2 vU; void main(){ vU=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
 function Offset() { // shifts the brain to the right on wide screens so the headline stays readable on the left
   const { camera, size } = useThree();
@@ -39,11 +39,11 @@ function Extras({ eu, calm, hi }: { eu: EU; calm: boolean; hi: boolean }) {
   useFrame((_, dt) => { if (!calm) rib.current.rotation.y += dt * .15; });
   return (<>
     <group ref={rib}>{[[.3, 0, .2], [-.4, 0, -.5], [.9, 0, .1]].map((r, i) =>
-      <lineLoop key={i} geometry={ell} rotation={[r[0], r[1], r[2]]} scale={1 - i * .12}><lineBasicMaterial color="#FFD700" transparent opacity={.7} blending={THREE.AdditiveBlending} depthWrite={false} /></lineLoop>)}</group>
+      <lineLoop key={i} geometry={ell} rotation={[r[0], r[1], r[2]]} scale={1 - i * .12}><lineBasicMaterial color="#E63946" transparent opacity={.7} blending={THREE.AdditiveBlending} depthWrite={false} /></lineLoop>)}</group>
     <group position={[0, -1.95, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]}><circleGeometry args={[3.4, 64]} /><meshStandardMaterial color="#0c0c0c" metalness={.9} roughness={.25} /></mesh>
-      {[.6, 1.1, 1.7, 2.4, 3.2].map(r => <mesh key={r} rotation={[-Math.PI / 2, 0, 0]} position={[0, .01, 0]}><ringGeometry args={[r, r + .04, 96]} /><meshBasicMaterial color={r < 1.5 ? "#FFD700" : "#D4AF37"} transparent opacity={.85} side={THREE.DoubleSide} /></mesh>)}
-      <pointLight position={[0, .4, 0]} intensity={25} color="#FFB800" />
+      {[.6, 1.1, 1.7, 2.4, 3.2].map(r => <mesh key={r} rotation={[-Math.PI / 2, 0, 0]} position={[0, .01, 0]}><ringGeometry args={[r, r + .04, 96]} /><meshBasicMaterial color={r < 1.5 ? "#E63946" : "#B51226"} transparent opacity={.85} side={THREE.DoubleSide} /></mesh>)}
+      <pointLight position={[0, .4, 0]} intensity={25} color="#E63946" />
     </group>
     <lineSegments geometry={beams}><shaderMaterial vertexShader={edgeV} fragmentShader={edgeF} uniforms={eu} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></lineSegments>
     <mesh position={[0, 1.2, 0]}><cylinderGeometry args={[9, 9, 8, 96, 1, true]} /><shaderMaterial vertexShader={wallV} fragmentShader={wallF} uniforms={eu} transparent depthWrite={false} blending={THREE.AdditiveBlending} side={THREE.BackSide} /></mesh>
@@ -53,7 +53,7 @@ const panelF = `uniform float uT; varying vec2 vU; float hs(vec2 p){ return frac
 void main(){ vec2 g=vU*vec2(14.,9.); vec2 id=floor(g), f=fract(g); float r=hs(id);
  float line=r<.5?step(abs(f.y-.5),.03):step(abs(f.x-.5),.03); float dt=step(length(f-.5),.12)*step(.7,hs(id+3.));
  float fm=step(vU.x,.015)+step(.985,vU.x)+step(vU.y,.02)+step(.98,vU.y); float scan=pow(max(sin(vU.y*40.-uT*3.),0.),20.)*.25;
- float a=(line*.35+dt*.8+fm*.7+scan)*(.55+.45*hs(id+floor(uT*1.5))); gl_FragColor=vec4(1.,.78,.15,clamp(a,0.,1.)*.8); }`;
+ float a=(line*.35+dt*.8+fm*.7+scan)*(.55+.45*hs(id+floor(uT*1.5))); gl_FragColor=vec4(.9,.22,.27,clamp(a,0.,1.)*.8); }`;
 // Floating holographic circuit panels (always face the camera)
 function Panels({ eu }: { eu: EU }) {
   return (<>{([[-4.6, 1.1, -1.5, 2.6, 1.7], [4.4, -.6, -2, 2.2, 1.5], [1.2, 3, -4, 3, 1.4]] as const).map(([x, y, z, w, h], i) =>
@@ -71,16 +71,16 @@ function Scene({ api, calm, hi, pulseRef }: { api: React.MutableRefObject<Neural
   });
   return (<>
     <Offset />
-    <ambientLight intensity={.35} /><pointLight position={[3, 3, 3]} intensity={60} color="#FFD700" /><pointLight position={[-3, -1, 2]} intensity={40} color="#D4AF37" />
+    <ambientLight intensity={.35} /><pointLight position={[3, 3, 3]} intensity={60} color="#E63946" /><pointLight position={[-3, -1, 2]} intensity={40} color="#B51226" />
     <Billboard><mesh><planeGeometry args={[10, 10]} /><shaderMaterial vertexShader={haloV} fragmentShader={haloF} transparent depthWrite={false} blending={THREE.AdditiveBlending} /></mesh></Billboard>
     <group ref={brain} rotation={HERO_SHAPE === "knot" ? [.55, 0, .1] : [0, 0, 0]}>
       <NeuralBrain api={api} hi={hi} calm={calm} pulseRef={pulseRef} />
-      {HERO_SHAPE === "brain" && <mesh position={[0, -1.15, -.35]} rotation={[.35, 0, 0]}><cylinderGeometry args={[.2, .15, .9, 24]} /><meshStandardMaterial color="#D4AF37" metalness={.9} roughness={.35} /></mesh>}
+      {HERO_SHAPE === "brain" && <mesh position={[0, -1.15, -.35]} rotation={[.35, 0, 0]}><cylinderGeometry args={[.2, .15, .9, 24]} /><meshStandardMaterial color="#B51226" metalness={.9} roughness={.35} /></mesh>}
     </group>
-    {[0, 1, 2].map(i => <mesh key={i} ref={el => { if (el) rings.current[i] = el; }} rotation={[Math.PI / 2, 0, 0]} position={[0, -1.9, 0]}><torusGeometry args={[1, .008, 8, 96]} /><meshBasicMaterial color="#FFD700" transparent opacity={.4} /></mesh>)}
+    {[0, 1, 2].map(i => <mesh key={i} ref={el => { if (el) rings.current[i] = el; }} rotation={[Math.PI / 2, 0, 0]} position={[0, -1.9, 0]}><torusGeometry args={[1, .008, 8, 96]} /><meshBasicMaterial color="#E63946" transparent opacity={.4} /></mesh>)}
     <Extras eu={eu} calm={calm} hi={hi} /><Panels eu={eu} />
-    <group ref={hexG}><instancedMesh ref={hexM} args={[undefined, undefined, 26]}><cylinderGeometry args={[.2, .2, .07, 6]} /><meshStandardMaterial color="#D4AF37" metalness={.85} roughness={.3} flatShading /></instancedMesh></group>
-    <group ref={partG}><points><bufferGeometry><bufferAttribute attach="attributes-position" args={[pts, 3]} /></bufferGeometry><pointsMaterial size={.035} color="#FFD700" transparent opacity={.8} /></points></group>
+    <group ref={hexG}><instancedMesh ref={hexM} args={[undefined, undefined, 26]}><cylinderGeometry args={[.2, .2, .07, 6]} /><meshStandardMaterial color="#B51226" metalness={.85} roughness={.3} flatShading /></instancedMesh></group>
+    <group ref={partG}><points><bufferGeometry><bufferAttribute attach="attributes-position" args={[pts, 3]} /></bufferGeometry><pointsMaterial size={.035} color="#E63946" transparent opacity={.8} /></points></group>
   </>);
 }
 export default function Hero3D({ onReady }: { onReady?: () => void }) {
@@ -96,7 +96,7 @@ export default function Hero3D({ onReady }: { onReady?: () => void }) {
   const toggle = () => { const p = !api.current.paused; api.current.paused = p; setPaused(p); if (ctrl.current) ctrl.current.autoRotate = !p && !calm; };
   return (
     <div className="absolute inset-0">
-      <div className="absolute inset-0" role="img" aria-label="Interactive 3D golden neural core. Swipe vertically to scroll the page, drag horizontally to rotate the model, and pinch to zoom.">
+      <div className="absolute inset-0" role="img" aria-label="Interactive 3D crimson neural core. Swipe vertically to scroll the page, drag horizontally to rotate the model, and pinch to zoom.">
         <Canvas style={{ touchAction: wide ? "auto" : "pan-y" }} onPointerMissed={() => api.current.clear?.()} onCreated={() => onReady?.()} dpr={hi ? [1, 2] : [1, 1.5]} camera={{ position: [0, .9, wide ? { knot: 6.2, brain: 5.4, sphere: 7 }[HERO_SHAPE] : { knot: 9.5, brain: 8, sphere: 10 }[HERO_SHAPE]], fov: 42 }} frameloop={calm ? "demand" : "always"} gl={{ antialias: true, powerPreference: "high-performance" }}>
           <Scene api={api} calm={calm} hi={hi} pulseRef={pulse} />
           {hi && !calm && <EffectComposer multisampling={0}><Bloom mipmapBlur luminanceThreshold={.55} intensity={.8} /></EffectComposer>}
