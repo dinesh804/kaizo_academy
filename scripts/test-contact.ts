@@ -1,6 +1,7 @@
 // Run: npx tsx scripts/test-contact.ts   (no real email is sent; see notes in docs/EMAIL-SETUP.md)
 import { POST } from "../app/api/contact/route";
 import { buildEmail, validateContact } from "../lib/contact";
+import { buildPayload } from "../lib/formspree";
 const good = { name: "Test User", email: "test.user@example.com", phone: "+91 91508 35164", subject: "Course question", message: "Hello, I would like to know more about the programme." };
 let n = 0, fail = 0; const ok = (name: string, c: boolean, extra = "") => { n++; if (!c) fail++; console.log(c ? "PASS" : "FAIL", name, extra); };
 let ipN = 0; const call = (body: unknown, o: { ip?: string; origin?: string; raw?: string } = {}) => POST(new Request("http://localhost:3000/api/contact", { method: "POST", headers: { "content-type": "application/json", host: "localhost:3000", "x-forwarded-for": o.ip ?? `10.0.0.${++ipN}`, ...(o.origin ? { origin: o.origin } : {}) }, body: o.raw ?? JSON.stringify(body) }));
@@ -25,6 +26,8 @@ const clearEnv = () => { for (const k of ["RESEND_API_KEY", "CONTACT_TO_EMAIL", 
   ok("intro registration requires a 10–15 digit mobile number", !introBadPhone.ok && !!introBadPhone.errors.phone);
   const introMail = introGood.ok ? buildEmail(introGood.data) : null;
   ok("intro notification includes preferred timing and consent", !!introMail?.text.includes("Preferred class timing: Evening") && introMail.text.includes("Contact consent: Yes"));
+  const formspreeIntro = introGood.ok ? buildPayload(introGood.data) : null;
+  ok("Formspree registration payload includes timing and consent", formspreeIntro?.preferredTiming === "Evening" && formspreeIntro.contactConsent === "Yes" && formspreeIntro.formType === "Free introductory class registration");
   r = await call({ ...good, website: "http://bot.example" }); ok("honeypot filled -> silent 200, nothing sent", r.status === 200 && (await r.json()).ok === true);
   ok("malformed JSON -> 400", (await call(null, { raw: "{bad" })).status === 400);
   ok("cross-origin -> 403", (await call(good, { origin: "https://evil.example" })).status === 403);

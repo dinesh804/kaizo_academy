@@ -17,6 +17,11 @@ export function buildPayload(d: ContactData) {
     programme: d.programme || "Not specified",
     subject: d.subject,
     status: d.status || "Not provided",
+    ...(d.formType === "intro-class" ? {
+      formType: "Free introductory class registration",
+      preferredTiming: d.preferredTiming || "Not provided",
+      contactConsent: d.consent ? "Yes" : "No",
+    } : {}),
     message: d.message,
   };
 }
