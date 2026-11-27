@@ -3,7 +3,7 @@ import Nav from "@/components/Nav"; import Footer from "@/components/Footer"; im
 import { posts } from "@/lib/blog";
 export const generateStaticParams = () => posts.map(p => ({ slug: p.slug }));
 export function generateMetadata({ params }: { params: { slug: string } }) {
-  const p = posts.find(x => x.slug === params.slug); return p ? { title: `${p.title} | KAIZO LABS`, description: p.summary } : {};
+  const p = posts.find(x => x.slug === params.slug); return p ? { title: p.title, description: p.summary, alternates: { canonical: `/blog/${p.slug}` } } : {};
 }
 export default function Post({ params }: { params: { slug: string } }) {
   const p = posts.find(x => x.slug === params.slug); if (!p) notFound();

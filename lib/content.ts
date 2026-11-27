@@ -35,17 +35,30 @@ export const programmes=["Applied AI & Machine Learning","Generative AI & Agenti
 
 // ---------- Courses (edit here) ----------
 const w = (t: string, topics: string, p: string) => ({ t, topics: topics.split(";"), p });
-export const FEE = "₹2,500";
-export const SCHOLARSHIP_ENABLED = true; // configurable: set false to hide the scholarship note
+export const foundingBatchFee = 2750;
+export const formatINR = (amount: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
+export const FEE = formatINR(foundingBatchFee);
+export const feeStatus = "Proposed founding-batch fee · subject to confirmation";
+// Proposed delivery allocation. Keep the figures configurable and unpublished as confirmed until KAIZO verifies delivery.
+export const proposedTraining = {
+  totalHours: 120,
+  liveInstructionHours: 60,
+  guidedLabHours: 30,
+  supervisedProjectHours: 30,
+  confirmed: false,
+};
+export const proposedSchedule = {
+  daysPerWeek: null as number | null,
+  hoursPerScheduledDay: null as number | null,
+  calendarWeeks: 8,
+  confirmed: false,
+};
+export const SCHOLARSHIP_ENABLED = false; // show only after eligibility and availability are confirmed
 export const BATCH_DATES = "To be announced";
-export const schedule = [
-  ["Hour 1", "Theory and concepts", "Fundamentals, architecture and technical principles."],
-  ["Hour 2", "Live coding", "The instructor demonstrates the actual implementation."],
-  ["Hour 3", "Student practical lab", "You implement tasks independently with trainer support."]];
 export const commonBenefits = ["Live interactive classes","Practical coding sessions","Hands-on projects","Learning materials","Practice datasets","Personal mentoring","Doubt-clearing support","Code reviews","GitHub portfolio guidance","Project documentation","Deployment experience","Resume guidance","Technical interview preparation","Completion certificate (based on completion criteria)","Learning community"];
 export const methodology = ["Weekly assignments","Weekly assessments","Coding exercises","Doubt-clearing sessions","Code reviews","Project milestones","Final capstone presentation"];
 export const courses = [
- { slug: "applied-ai-machine-learning", n: "Applied AI & Machine Learning", tag: "Learn AI. Build Models. Solve Real Problems.",
+ { slug: "applied-ai-machine-learning", n: "Applied AI & Machine Learning", tag: "Learn AI. Build Models. Solve Real Problems.", training: proposedTraining, fee: foundingBatchFee, schedule: proposedSchedule,
    level: "Beginner friendly", prereq: "Basic computer knowledge. Python is taught from the beginning.",
    obj: "Understand the complete AI/ML development lifecycle, from Python fundamentals and data processing to model development, evaluation and deployment.",
    audience: ["College students","Fresh graduates","Beginners in AI and Machine Learning","Aspiring data scientists","Software developers interested in AI"],
@@ -61,8 +74,8 @@ export const courses = [
     w("Deep Learning","Neurons and activation functions;Forward and backward propagation concepts;TensorFlow or PyTorch;Convolutional Neural Networks;Image classification","Image classification application"),
     w("NLP and Introduction to Generative AI","NLP fundamentals;Text preprocessing and tokenisation;Text classification;Introduction to transformers and LLMs;Introduction to prompt engineering","Text intelligence application"),
     w("Deployment and Capstone","Model deployment;Streamlit;APIs;Git and GitHub;Project documentation;Final presentation","Capstone project")],
-   faq: [["Do I need to know Python?","No. Week 1 teaches Python from the beginning. Basic computer knowledge is enough."],["Will I master deep learning in 8 weeks?","No. You will build a solid foundation and one working image model. Mastery takes longer practice."]] },
- { slug: "generative-ai-agentic-ai", n: "Generative AI & Agentic AI Development", tag: "Build LLM Applications. Create AI Agents. Deploy Intelligent Systems.",
+   faq: [["Do I need to know Python?","No. The first curriculum module teaches Python from the beginning. Basic computer knowledge is enough."],["Will I master deep learning from this course?","The curriculum provides a foundation and an opportunity to build an introductory image model. Mastery takes longer practice."]] },
+ { slug: "generative-ai-agentic-ai", n: "Generative AI & Agentic AI Development", tag: "Build LLM Applications. Create AI Agents. Deploy Intelligent Systems.", training: proposedTraining, fee: foundingBatchFee, schedule: proposedSchedule,
    level: "Requires basic Python", prereq: "Basic Python programming and familiarity with programming concepts. This course does not teach Python from scratch.",
    obj: "Develop practical applications using LLMs, embeddings, vector databases, Retrieval-Augmented Generation, AI agents and deployment frameworks.",
    audience: ["Students with Python knowledge","AI/ML learners","Fresh graduates","Developers","Aspiring GenAI engineers"],
@@ -80,13 +93,13 @@ export const courses = [
     w("Capstone Development","Project planning;System architecture;Implementation and testing;Evaluation;Documentation and GitHub;Final presentation","Capstone project")],
    faq: [["Do I have to pay for LLM APIs?","We aim to use open-source and free-tier options wherever possible. Any paid API usage will be optional and low-cost; tool choices are confirmed before each batch."],["Can I join without Python?","Not yet. Take Applied AI & Machine Learning first, or learn Python basics before joining."]] }];
 export type Course = (typeof courses)[number];
-export const commonFaq = [["What is the fee?", `${FEE} per student for each 8-week course.`],["Is a job guaranteed?","No. We offer resume guidance and interview preparation, but we do not promise jobs or placements."],["How do I get the certificate?","Certificates are issued based on completion criteria, which we share at enrolment."],["When does the next batch start?","Batch dates are " + BATCH_DATES + ". Send an enquiry and we will tell you first."]];
+export const commonFaq = [["What is the fee?", `${FEE} is the proposed founding-batch fee per student, subject to confirmation.`],["Is a job guaranteed?","No. We offer resume guidance and interview preparation, but we do not promise jobs or placements."],["How do I get the certificate?","Certificates are issued based on completion criteria, which we share at enrolment."],["When does the next batch start?","Batch dates are " + BATCH_DATES + ". Send an enquiry and we will share confirmed details."]];
 export const compareRows: [string, string, string][] = [
  ["Best for","Beginners, students, aspiring data scientists","Learners who already code in Python"],
  ["Prerequisite","Basic computer knowledge","Basic Python programming (required)"],
  ["You learn","Python, data science, ML, deep learning, intro NLP, deployment","LLMs, prompts, embeddings, vector databases, RAG, LangChain, agents, GenAI deployment"],
  ["You build","An end-to-end ML capstone","A working GenAI application"],
- ["Duration and fee","8 weeks, " + FEE,"8 weeks, " + FEE]];
+ ["Schedule and proposed fee","To be confirmed · " + FEE + " proposed","To be confirmed · " + FEE + " proposed"]];
 
 // ---------- Contact and proof (edit here) ----------
 export const PHONE_DISPLAY = "+91 91508 35164";

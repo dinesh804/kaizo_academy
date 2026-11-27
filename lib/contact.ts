@@ -1,5 +1,5 @@
 import { programmes } from "@/lib/content";
-export type ContactData = { name: string; email: string; phone: string; subject: string; message: string; programme: string; status: string };
+export type ContactData = { name: string; email: string; phone: string; subject: string; message: string; programme: string; status: string; formType?: string; preferredTiming?: string; consent?: boolean };
 const EMAIL_RE = /^[^\s@<>()",;:\\]+@[^\s@<>()",;:\\]+\.[^\s@<>()",;:\\]{2,}$/;
 // Removes control characters; single-line fields also lose CR/LF/Unicode line separators (blocks email header injection).
 const clean = (v: unknown, max: number, multi = false) => {
@@ -8,7 +8,7 @@ const clean = (v: unknown, max: number, multi = false) => {
   return s.trim().slice(0, max + 1);
 };
 export function validateContact(raw: Record<string, unknown>): { ok: true; data: ContactData } | { ok: false; errors: Record<string, string> } {
-  const d: ContactData = { name: clean(raw.name, 100), email: clean(raw.email, 254).toLowerCase(), phone: clean(raw.phone, 20), subject: clean(raw.subject, 150), message: clean(raw.message, 3000, true), programme: clean(raw.programme, 100), status: clean(raw.status, 200) };
+  const d: ContactData = { name: clean(raw.name, 100), email: clean(raw.email, 254).toLowerCase(), phone: clean(raw.phone, 20), subject: clean(raw.subject, 150), message: clean(raw.message, 3000, true), programme: clean(raw.programme, 100), status: clean(raw.status, 200), formType: clean(raw.formType, 30), preferredTiming: clean(raw.preferredTiming, 30), consent: raw.consent === true || raw.consent === "yes" };
   const errors: Record<string, string> = {};
   if (d.name.length < 2 || d.name.length > 100) errors.name = "Enter your full name (2 to 100 characters).";
   if (!EMAIL_RE.test(d.email) || d.email.length > 254) errors.email = "Enter a valid email address.";
@@ -18,6 +18,14 @@ export function validateContact(raw: Record<string, unknown>): { ok: true; data:
   else if ((d.message.match(/https?:\/\//gi) || []).length > 3) errors.message = "Please remove extra links from your message.";
   if (d.programme && !programmes.includes(d.programme)) d.programme = "";
   if (d.status.length > 200) errors.status = "Please shorten this field.";
+  if (d.formType === "intro-class") {
+    const digits = d.phone.replace(/\D/g, "").length;
+    if (digits < 10 || digits > 15) errors.phone = "Enter a mobile number with 10 to 15 digits.";
+    if (!d.programme || !programmes.includes(d.programme)) errors.programme = "Choose a course interest.";
+    if (!d.status) errors.status = "Choose your education or experience level.";
+    if (!["Morning", "Afternoon", "Evening", "Flexible"].includes(d.preferredTiming ?? "")) errors.preferredTiming = "Choose a preferred class timing.";
+    if (!d.consent) errors.consent = "Please agree to be contacted about the introductory class.";
+  }
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, data: d };
 }
 
@@ -38,6 +46,7 @@ export function buildEmail(data: ContactData) {
     ["Programme", data.programme || "Not specified"],
     ["Subject", data.subject],
     ["Status", data.status || "Not provided"],
+    ...(data.formType === "intro-class" ? [["Preferred class timing", data.preferredTiming || "Not provided"] as const, ["Contact consent", data.consent ? "Yes" : "No"] as const] : []),
     ["Message", data.message],
   ] as const;
   const text = ["KAIZO LABS – NEW WEBSITE ENQUIRY", ...fields.map(([label, value]) => `${label}: ${value}`)].join("\n\n");

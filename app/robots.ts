@@ -1,1 +1,1 @@
-export default function robots(){return{rules:{userAgent:"*",allow:"/"},sitemap:`${process.env.NEXT_PUBLIC_SITE_URL??"https://example.com"}/sitemap.xml`}}
+export default function robots(){return{rules:{userAgent:"*",allow:"/"},sitemap:"https://kaizo-academy.vercel.app/sitemap.xml"}}

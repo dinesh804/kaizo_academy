@@ -1,6 +1,6 @@
 import Nav from "@/components/Nav"; import Footer from "@/components/Footer";
 import { posts } from "@/lib/blog";
-export const metadata = { title: "Blog | KAIZO LABS", description: "Articles on AI, machine learning and generative AI." };
+export const metadata = { title: "Blog", description: "Articles on AI, machine learning and generative AI from KAIZO LABS.", alternates: { canonical: "/blog" } };
 export default function Blog() {
   return (<><Nav /><main className="mx-auto max-w-4xl px-5 pb-20 pt-32">
     <h1 className="font-display text-4xl font-bold grad">Blog</h1>

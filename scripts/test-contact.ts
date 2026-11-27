@@ -16,6 +16,15 @@ const clearEnv = () => { for (const k of ["RESEND_API_KEY", "CONTACT_TO_EMAIL", 
   ok("CR/LF stripped from name and subject", inj.ok && !/[\r\n]/.test(inj.data.name + inj.data.subject) && mail!.subject === "New Contact Enquiry – KAIZO LABS");
   r = await call({ ...good, message: "x".repeat(3001) }); ok("over-length message -> 422", r.status === 422);
   r = await call({ ...good, message: "http://a.com http://b.com http://c.com http://d.com spam spam" }); ok("link-stuffed spam -> 422", r.status === 422);
+  const intro = { ...good, formType: "intro-class", programme: "Applied AI & Machine Learning", status: "College student", preferredTiming: "Evening", consent: true };
+  const introGood = validateContact(intro);
+  ok("intro registration accepts a valid phone, interest, timing and consent", introGood.ok);
+  const introNoConsent = validateContact({ ...intro, consent: false });
+  ok("intro registration requires contact consent", !introNoConsent.ok && !!introNoConsent.errors.consent);
+  const introBadPhone = validateContact({ ...intro, phone: "12345" });
+  ok("intro registration requires a 10–15 digit mobile number", !introBadPhone.ok && !!introBadPhone.errors.phone);
+  const introMail = introGood.ok ? buildEmail(introGood.data) : null;
+  ok("intro notification includes preferred timing and consent", !!introMail?.text.includes("Preferred class timing: Evening") && introMail.text.includes("Contact consent: Yes"));
   r = await call({ ...good, website: "http://bot.example" }); ok("honeypot filled -> silent 200, nothing sent", r.status === 200 && (await r.json()).ok === true);
   ok("malformed JSON -> 400", (await call(null, { raw: "{bad" })).status === 400);
   ok("cross-origin -> 403", (await call(good, { origin: "https://evil.example" })).status === 403);
@@ -27,6 +36,6 @@ const clearEnv = () => { for (const k of ["RESEND_API_KEY", "CONTACT_TO_EMAIL", 
   process.env.VERCEL_ENV = "production"; r = await call(good); ok("production without Upstash -> 503 (in-memory limiter refused)", r.status === 503);
   delete process.env.VERCEL_ENV;
   const m = buildEmail({ ...good, phone: "", programme: "", status: "", message: "<script>alert(1)</script>\nline 2" });
-  ok("email: title, subject, reply text and HTML-escaping", m.html.includes("KAIZO LABS – NEW WEBSITE ENQUIRY") && !m.html.includes("<script>") && m.html.includes("&lt;script&gt;") && m.text.includes("Phone: Not provided") && m.html.includes("#D4AF37"));
+  ok("email: title, subject, reply text and HTML-escaping", m.html.includes("KAIZO LABS – NEW WEBSITE ENQUIRY") && !m.html.includes("<script>") && m.html.includes("&lt;script&gt;") && m.text.includes("Phone: Not provided") && m.html.includes("#B51226"));
   console.log(`\n${n - fail}/${n} passed`); process.exit(fail ? 1 : 0);
 })();

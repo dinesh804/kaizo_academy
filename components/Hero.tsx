@@ -45,10 +45,11 @@ export default function Hero() {
       <div className="pointer-events-none relative z-20 mx-auto w-full max-w-7xl px-5">
         <div className="max-w-xl">
           <div className="h-logo"><Logo size="lg" /></div>
-          <p className="h-line mt-6 text-sm tracking-widest text-neon">IMAGINE. IMPROVE. INNOVATE.</p>
-          <h1 className="h-line mt-3 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">DON'T JUST LEARN AI. <span className="grad">BUILD IT.</span></h1>
-          <p className="h-line mt-6 text-lg text-muted">Transform your curiosity into real-world technology skills through practical learning, innovative projects and expert guidance.</p>
-          <div className="pointer-events-auto mt-8 flex flex-wrap gap-4"><a href="/academy" className="h-cta btn btn-p">EXPLORE COURSES</a><a href="/#contact" className="h-cta btn btn-s">ENROL NOW</a></div>
+          <p className="h-line mt-6 text-sm tracking-widest text-neon">KAIZO ACADEMY · PRACTICAL AI & TECHNOLOGY EDUCATION</p>
+          <h1 className="h-line mt-3 font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Start Your AI Career <span className="grad">from Zero</span></h1>
+          <p className="h-line mt-6 text-lg text-muted">No prior AI experience? No problem. Build your technology foundation through structured learning, practical coding, guided exercises and real-world projects.</p>
+          <p className="h-line mt-3 text-sm text-muted">Beginner-friendly learning with Python taught from the foundations in our Applied AI & Machine Learning curriculum.</p>
+          <div className="pointer-events-auto mt-8 flex flex-wrap gap-4"><a href="/academy" className="h-cta btn btn-p">Explore Courses</a><button type="button" onClick={() => window.dispatchEvent(new Event("kaizo:open-intro"))} className="h-cta btn btn-s">Attend a Free Introductory Class</button></div>
         </div>
       </div>
     </section>);

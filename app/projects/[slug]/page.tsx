@@ -4,7 +4,7 @@ import { Cover, Tech } from "@/components/ProjectCards";
 import { projects } from "@/lib/projects";
 export const generateStaticParams = () => projects.map(p => ({ slug: p.slug }));
 export function generateMetadata({ params }: { params: { slug: string } }) {
-  const p = projects.find(x => x.slug === params.slug); return p ? { title: `${p.title} | KAIZO LABS`, description: p.desc } : {};
+  const p = projects.find(x => x.slug === params.slug); return p ? { title: p.title, description: p.desc, alternates: { canonical: `/projects/${p.slug}` } } : {};
 }
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   const p = projects.find(x => x.slug === params.slug); if (!p) notFound();
